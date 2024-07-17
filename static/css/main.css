@@ -1,0 +1,36 @@
+.brand-color {
+    background-color: rgb(4, 69, 76);
+}
+.logo-color{
+    color: rgb(253, 253, 253);
+}
+.bg-banner{
+  
+    background: linear-gradient(180deg, rgba(27,139,115,1) 0%, rgba(4,69,76,1) 65%);
+}
+.my-text{
+    color: rgb(4, 69, 76);
+    font-weight: bold;
+}
+
+.nav-item a {
+    color: white;
+    font-weight: bold;
+
+    transition: .3s;
+}
+
+
+.nav-item a:hover {
+    color: yellow;
+    font-weight: bold;
+    background-color: transparent;
+    transition: .3s;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* Optional: Highlighting on hover */
+}
+.transparent-table {
+    background-color: transparent;
+}

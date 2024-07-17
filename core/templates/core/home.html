@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class='d-flex w-75 m-auto pb-3 notice-board'>
+    <marquee class='mt-1 my-text'>Welcome students </marquee>            
+    {% if request.user.is_authenticated %}
+    <a class="btn btn-outline-success p-1" href=""><i class="fa fa-edit" ></i></a>
+    {% endif %}
+</div>
+
+{% endblock content %}

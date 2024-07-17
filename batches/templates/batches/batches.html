@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container row mt-3">
+    <div class="col-md-8">
+        <h3>Batches:</h3>
+    </div>
+    <div class="col-md-4">
+        <a class="btn bg-banner text-white border p-2 w-100" href="{% url 'add_batch' %}">Add Batch</a>
+    </div>
+</div>
+
+
+
+<div class=" mt-5">
+    <div class='container text-center pb-3'>
+        <form id="searchForm" action="" method='get'>
+            <div class="input-group w-75 m-auto">
+                <input type="text" class="form-control p-2" placeholder="Search By Student Name | Phone Number | School | Class" aria-label="Recipient's username" aria-describedby="button-addon2" name='search_query' value="{{ search_query }}">
+                <button class="btn bg-banner text-white border" type="submit" id="button-addon2">Search</button>
+            </div>
+        </form> 
+    </div>
+</div>
+
+<div class="container table-responsive ">
+    <table class="table table-success table-hover ">
+        <thead >
+          <tr >
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Time</th>
+            <th scope="col">Class</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for batch in batches %}
+            <tr>
+                <th scope="row">{{batch.id}}</th>
+                <td>{{batch.title}}</td>
+                <td>{{batch.time}}</td>
+                <td>Eight</td>
+                <td>{{batch.is_active}}</td>
+                <td><a href="{% url "batch_details" batch.id %}" class="btn btn-warning ">View</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</div>
+
+
+{% for batch in batches %}
+
+{% endfor %}
+
+{% endblock content %}
