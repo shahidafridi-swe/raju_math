@@ -19,7 +19,9 @@
 
     transition: .3s;
 }
-
+.tbg{
+    background-color: rgba(0, 0, 0, 0.506);
+}
 
 .nav-item a:hover {
     color: yellow;

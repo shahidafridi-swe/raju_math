@@ -3,10 +3,106 @@
 {% block content %}
 
 <div class='d-flex w-75 m-auto pb-3 notice-board'>
-    <marquee class='mt-1 my-text'>Welcome students </marquee>            
+    <marquee class='mt-1 my-text'>Welcome Students</marquee>            
     {% if request.user.is_authenticated %}
-    <a class="btn btn-outline-success p-1" href=""><i class="fa fa-edit" ></i></a>
+    <a class="btn btn-outline-dark " href="">Update</a>
     {% endif %}
 </div>
+
+{% comment %} banner section {% endcomment %}
+<section>
+    <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for banner in banners %}
+            <div class="px-5  carousel-item {% if forloop.first %}active{% endif %}">
+                <img  src="{{ banner.image.url }}" class="d-block w-100 rounded"  alt="{{ banner.title }}">
+                <div class="carousel-caption d-none d-md-block">
+                    <h3 class="tbg p-3 rounded">{{ banner.title }}</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+
+{% comment %} success student info {% endcomment %}
+ <h3 class="mt-5 my-text text-center">OUR SUCCESS</h3>
+<div class="swiffy-slider slider-item-show3 slider-nav-round slider-nav-page ">
+    <ul class="slider-container">
+        {% for student in successStudents %}
+        
+        <li>
+            <div class="card border-0">
+                <div class="ratio ratio-1x1">
+                    <img src="{{ student.image.url }}" class="card-img-top" loading="lazy" alt="...">
+                </div>
+                <div class="card-body p-3">
+                    <div class="">
+                        <h3 class="my-text">{{student.name}}</h3>
+                        <p class="">{{student.school}}</p>
+                        <p class="">{{student.current_class}}</p>
+                        <p class="my-text">{{student.success}}</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+        {% endfor %}
+        
+    </ul>
+
+    <button type="button" class="slider-nav" aria-label="Go left"></button>
+    <button type="button" class="slider-nav slider-nav-next" aria-label="Go left"></button>
+</div>
+{% comment %} success student info part end  {% endcomment %}
+
+{% comment %} student review part start  {% endcomment %}
+ <section class="my-3">
+    <h3 class="mt-5 my-text text-center">STUDENTS REVIEW</h3>
+    <div class="swiffy-slider slider-item-show3 slider-nav-round slider-nav-page ">
+        <ul class="slider-container">
+            {% for student in successStudents %}
+            
+            <li>
+                <div class="card border-0 bg-banner text-white">
+                    <div class="text-center">
+                        <img src="{{ student.image.url }}" class="card-img-top h-50 w-50 rounded-circle" loading="lazy" alt="...">
+                        <hr class="m-0">
+                    </div>
+                    <div class="card-body px-3">
+                        <div class="">
+                            <h3 class="">{{student.name}}</h3>
+                            <p class="">{{student.school}}</p>
+                        <hr class="m-0">
+
+                            <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque eaque exercitationem quibusdam maiores dolore, enim cupiditate dignissimos quam quod ipsam tempora! Eaque, repellat optio! Fugiat quidem illum quam atque facere corporis minus.</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            {% endfor %}
+            
+        </ul>
+    
+        <button type="button" class="slider-nav" aria-label="Go left"></button>
+        <button type="button" class="slider-nav slider-nav-next" aria-label="Go left"></button>
+    </div>
+ </section>
+
+
+{% comment %} Contact Part {% endcomment %}
+ <section>
+
+ </section>
+
 
 {% endblock content %}
