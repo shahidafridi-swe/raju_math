@@ -19,7 +19,7 @@
 
    <div class='container'>
     {% if messages %}
-    <div class="toast-container  end-0 ">
+    <div class="toast-container  end-0 p-3">
       {% for message in messages %}
       <div class="toast align-items-center text-bg-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
@@ -33,6 +33,7 @@
       </div>            
     {% endif %}
   </div>
+  
 
     <div class='container'>
         {% block content %}{% endblock content %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="col-md-9 m-auto border p-3 mt-3 rounded bg-banner">
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h3 class="text-white fw-bold">Add Student Form</h3>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                {{ form.phone|as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+                {{ form.username|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                {{ form.first_name|as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+                {{ form.last_name|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                {{ form.joining_class|as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+                {{ form.current_class|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                {{ form.school_name|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                {{ form.email|as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+                {{ form.image|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                {{ form.address|as_crispy_field }}
+            </div>
+        </div>
+
+        <button type="submit" class="btn bg-banner text-white border w-100">Add Student</button>
+    </form>
+
+</div>
+
+{% endblock content %}

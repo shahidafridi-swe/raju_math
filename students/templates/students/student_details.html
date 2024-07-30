@@ -7,7 +7,9 @@
 
         <div class="row border border-dark rounded p-3">
             <div class="col-md-5">
-                <img src="{{ student.image.url }}" alt="student image" class="w-75 rounded-circle">
+                {% if student.image %}
+                    <img src="{{ student.image.url }}" alt="student image" class="w-75 rounded-circle">
+                {% endif %}
             </div>
             <div class="col-md-7 ">
                 <h3>{{student.user.first_name}} {{student.user.last_name}}</h3>

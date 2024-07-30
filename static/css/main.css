@@ -1,3 +1,6 @@
+
+
+
 .brand-color {
     background-color: rgb(4, 69, 76);
 }
@@ -35,4 +38,11 @@
 }
 .transparent-table {
     background-color: transparent;
+}
+
+.form-label{
+    color : white;
+}
+.asteriskField{
+    color : red;
 }
