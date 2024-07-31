@@ -6,7 +6,13 @@ from .forms import StudentForm
 from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm, SetPasswordForm
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
+from django.contrib.auth.decorators import user_passes_test
 
+def superuser_required(user):
+    return user.is_superuser
+
+
+@user_passes_test(superuser_required, login_url='home')
 def students(request):
     search_query = request.GET.get('search_query', '')
     if search_query:
@@ -29,6 +35,7 @@ def students(request):
 
 
 
+@user_passes_test(superuser_required, login_url='home')
 def studentDetails(request, id):
     
     student = Student.objects.get(id=id)
@@ -37,6 +44,7 @@ def studentDetails(request, id):
     }
     return render(request, 'students/student_details.html', context)
 
+@user_passes_test(superuser_required, login_url='home')
 def addStudent(request):
     if request.method == "POST":
         form = StudentForm(request.POST, request.FILES)

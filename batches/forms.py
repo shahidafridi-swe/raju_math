@@ -5,4 +5,4 @@ from .models import Batch
 class BatchForm(forms.ModelForm):
     class Meta:
         model = Batch
-        fields = "__all__"
+        fields = ('title', 'level', 'day', 'time', 'fee')

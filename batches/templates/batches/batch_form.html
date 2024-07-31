@@ -1,12 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>Add New Batch</h2>
-    <form method="post">
+{% load crispy_forms_tags %}
+
+<div class="col-md-6 m-auto border p-3 mt-3 rounded bg-banner">
+
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Add Batch</button>
+        <div class='d-flex justify-content-between'>
+            <h3 class='text-uppercase text-white'>Add a batch</h3>
+            <a class='btn btn-outline-dark rounded-pill'  href="{% url 'batches' %}"> &#10094 </a>
+        </div>
+        
+        <hr>
+        {{form | crispy}}
+       
+        <button type="submit" class="btn bg-banner text-white border w-100">ADD BATCH</button>
     </form>
+
 </div>
+
 {% endblock content %}

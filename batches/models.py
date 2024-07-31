@@ -5,6 +5,8 @@ from students.models import Student
 class Batch(models.Model):
     students = models.ManyToManyField(Student, null=True, blank=True, related_name="batches")
     title = models.CharField(max_length=255)
+    level = models.CharField(max_length=50, default='')
+    day = models.CharField(max_length=255, default='')
     time = models.CharField(max_length=255)
     created_at = models.DateField(auto_now_add=True)
     is_active = models.BooleanField(default=True)

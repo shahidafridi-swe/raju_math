@@ -7,7 +7,10 @@
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <h3 class="text-white fw-bold">Add Student Form</h3>
+        <div class='d-flex justify-content-between'>
+            <h3 class='text-uppercase text-white fw-bold'>Add Student Form</h3>
+            <a class='btn btn-outline-dark rounded-pill'  href="{% url 'students' %}"> &#10094 </a>
+        </div>
         <hr>
         <div class="row">
             <div class="col-md-6">

@@ -3,16 +3,34 @@ from .models import Batch
 from .forms import BatchForm
 from students.models import Student
 from django.db.models import Q
+from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 
+def superuser_required(user):
+    return user.is_superuser
 
+@user_passes_test(superuser_required, login_url='home')
 def batches(request):
-    batches = Batch.objects.all()
+    search_query = request.GET.get('search_query', '')
+
+    if search_query:
+        batches = Batch.objects.filter(
+            Q(title__icontains=search_query) |
+            Q(day__icontains=search_query) |
+            Q(time__icontains=search_query) |
+            Q(level__icontains=search_query)
+        )
+    else:
+        batches = Batch.objects.all()
+
     context = {
-        "batches" : batches
+        'batches': batches,
+        'search_query': search_query
     }
-    return render(request, "batches/batches.html", context)
+    return render(request, 'batches/batches.html', context)
 
 
+@user_passes_test(superuser_required, login_url='home')
 def batchDetails(request, id):
     batch = Batch.objects.get(id=id)
     search_query = request.GET.get('search_query', '')
@@ -43,11 +61,13 @@ def batchDetails(request, id):
    
     return render(request, "batches/batch_details.html", context)
 
+@user_passes_test(superuser_required, login_url='home')
 def add_batch(request):
     if request.method == 'POST':
         form = BatchForm(request.POST)
         if form.is_valid():
-            form.save()
+            batch=form.save()
+            messages.success(request, f"'{batch.title}' added successfully")
             return redirect('batches')  # Redirect to the list of batches
     else:
         form = BatchForm()
