@@ -4,6 +4,8 @@ from django.contrib import messages
 from .models import Student
 from .forms import StudentForm
 from django.db.models import Q
+from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm, SetPasswordForm
+from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 
 def students(request):
     search_query = request.GET.get('search_query', '')
@@ -48,4 +50,4 @@ def addStudent(request):
         form = StudentForm()
     
     return render(request, 'students/add_student.html', {'form': form})
-        
+
