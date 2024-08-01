@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from .models import Batch
 from .forms import BatchForm
 from students.models import Student
@@ -73,6 +73,40 @@ def add_batch(request):
         form = BatchForm()
     
     context = {
-        'form': form
+        'form': form,
+        'type': 'ADD'
     }
     return render(request, 'batches/batch_form.html', context)
+
+
+@user_passes_test(superuser_required, login_url='home')
+def update_batch(request, pk):
+    batch = Batch.objects.get(id=pk)
+    if request.method == 'POST':
+        form = BatchForm(request.POST, instance=batch)
+        if form.is_valid():
+            batch = form.save()
+            messages.success(request, f"'{batch.title}' updated successfully")
+            return redirect('batches')  # Redirect to the list of batches
+    else:
+        form = BatchForm(instance=batch)
+    
+    context = {
+        'form': form,
+        'type': 'UPDATE',
+        'batch': batch  # Make sure the batch is included in the context
+    }
+    return render(request, 'batches/batch_form.html', context)
+
+@user_passes_test(superuser_required, login_url='home')
+def delete_batch(request, pk):
+    batch = get_object_or_404(Batch, id=pk)
+    if request.method == 'POST':
+        batch.delete()
+        messages.success(request, f"'{batch.title}' deleted successfully")
+        return redirect('batches')  # Redirect to the list of batches
+    
+    context = {
+        'batch': batch
+    }
+    return render(request, 'batches/batch_confirm_delete.html', context)
