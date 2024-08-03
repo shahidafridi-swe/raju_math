@@ -15,8 +15,12 @@
                 <h3>{{student.user.first_name}} {{student.user.last_name}}</h3>
                 <h4>UserID: {{student.user.username}}</h4>
                 <hr>
+                <h6>Current Month: {{month}}</h6>
+                <h6>Current year: {{year}}</h6>
+                <hr>
+
                 <p>Phone: {{student.phone}}</p>
-                <p>School: {{student.school_name}}</p>
+                <p>School: {{student.school.name}}</p>
                 <p>Joining Class: {{student.joining_class}}</p>
                 <p>Current Class: {{student.current_class}}</p>
             </div>

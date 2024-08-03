@@ -1,13 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User 
 
+class School(models.Model):
+    name = models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.name
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=11)
     image = models.ImageField(upload_to='students/images', blank=True, null=True)
-    school_name = models.CharField(max_length=255)
-    joining_class = models.CharField(max_length=10)
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    joining_class = models.CharField(max_length=10, blank=True, null=True)
     current_class = models.CharField(max_length=10)
     address = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

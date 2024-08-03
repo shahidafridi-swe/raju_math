@@ -42,7 +42,7 @@
                 <td>{{student.user.first_name}} {{student.user.last_name}}</td>
                 <td>{{student.phone}}</td>
                 <td>{{student.current_class}}</td>
-                <td>{{student.school_name}}</td>
+                <td>{{student.school.name}}</td>
                 <td>Due</td>
                 <td><a href="{% url "student_details" student.id %}" class="btn btn-warning ">View</a></td>
             </tr>
