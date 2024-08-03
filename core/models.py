@@ -17,3 +17,9 @@ class SuccessStudent(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
+    
+class NoticeBoard(models.Model):
+    notice = models.TextField(blank=True, null=True)
+    last_update = models.DateTimeField(auto_now=True)
+   

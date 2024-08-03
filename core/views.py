@@ -1,20 +1,25 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm, SetPasswordForm
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Banner, SuccessStudent
+from .models import Banner, SuccessStudent, NoticeBoard
 from students.models import Student
 from django.contrib.auth.decorators import login_required
+from .forms import NoticeBoardForm
 
 def home(request):
     banners = Banner.objects.all()
     successStudents = SuccessStudent.objects.all()
+    notice = NoticeBoard.objects.latest('last_update')  # Assuming you want to show the latest notice
+    form = NoticeBoardForm(instance=notice)
+
     context = {
-        'banners' : banners,
-        'successStudents': successStudents
+        'banners': banners,
+        'successStudents': successStudents,
+        'notice': notice,
+        'form': form
     }
-    print(banners[0])
     return render(request, 'core/home.html', context)
 
 
@@ -45,7 +50,10 @@ def userLogin(request):
 @login_required(login_url='login')
 def userProfile(request):
     user = request.user
-    student = Student.objects.get(user=user)
+    try:
+        student = Student.objects.get(user=user)
+    except:
+        student = None
     return render(request, 'core/profile.html', {"user": user, "student": student})
 
 @login_required(login_url='login')
@@ -67,4 +75,21 @@ def setPassword(request):
             messages.error(request, "Please correct the errors below.")
     else:
         form = SetPasswordForm(user=request.user)
-    return render(request, 'core/login.html',{'form':form, 'type':'Change Password'})
+    return render(request, 'core/change_password.html',{'form':form, 'type':'Change Password'})
+
+
+def noticeUpdate(request, pk):
+    notice = get_object_or_404(NoticeBoard, pk=pk)
+    form = NoticeBoardForm(instance=notice)
+
+    if request.method == 'POST':
+        form = NoticeBoardForm(request.POST, instance=notice)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+    context = {
+        'form': form,
+        'notice': notice
+    }
+    return render(request, 'core/home.html', context)

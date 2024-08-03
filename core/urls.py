@@ -7,5 +7,6 @@ urlpatterns = [
     path('profile/', views.userProfile, name='profile'),
     path('logout/', views.logoutUser, name="logout"),
     path('set_password/', views.setPassword, name="set_password"),
+    path('notice_update/<int:pk>/', views.noticeUpdate, name='notice_update'),
      
 ]

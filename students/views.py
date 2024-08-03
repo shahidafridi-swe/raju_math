@@ -39,7 +39,7 @@ def students(request):
 
 @user_passes_test(superuser_required, login_url='home')
 def studentDetails(request, id):
-    cur_month = datetime.datetime.now().strftime("%B")
+    cur_month = datetime.datetime.now().month
     cur_year = datetime.datetime.now().year
     student = get_object_or_404(Student, id=id)
     context = {

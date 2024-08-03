@@ -20,6 +20,9 @@ class Student(models.Model):
     
     def __str__(self) -> str:
         return self.user.username
+      
+   
+   
     
 class Payment(models.Model):
     MONTH_CHOICES = [

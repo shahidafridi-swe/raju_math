@@ -1,12 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
-
 <div class='d-flex w-75 m-auto pb-3 notice-board'>
-    <marquee class='mt-1 my-text'>Welcome Students</marquee>            
-    {% if request.user.is_authenticated %}
-    <a class="btn btn-outline-dark " href="">Update</a>
+    <marquee class='mt-1 my-text'>{{ notice.notice }}</marquee>            
+    {% if request.user.is_authenticated and request.user.is_superuser %}
+    <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#updateNoticeModal">U</button>
     {% endif %}
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="updateNoticeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateNoticeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header brand-color ">
+                <h1 class="modal-title fs-5 text-white" id="updateNoticeModalLabel">Update Notice</h1>
+                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-banner pb-0">
+                <form method="POST" action="{% url 'notice_update' notice.id %}">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3 form-group">
+                            <label for="{{ field.id_for_label }}" class="form-label">Write here the new notice...</label>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                    <input class='btn bg-banner border text-white w-100' type="submit" value="UPDATE NOTICE">
+                </form>
+            </div>
+            <div class="brand-color px-3 text-white rounded">
+                <hr>
+               
+               <p><span class="fw-bold">Current Notice:</span> {{notice.notice}}</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% comment %} banner section {% endcomment %}
@@ -98,11 +126,9 @@
     </div>
  </section>
 
-
 {% comment %} Contact Part {% endcomment %}
  <section>
 
  </section>
-
 
 {% endblock content %}

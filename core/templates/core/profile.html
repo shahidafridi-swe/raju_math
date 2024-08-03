@@ -4,7 +4,7 @@
     <div class="container mt-5">
         <div class="row border border-dark rounded p-3">
             <div class="col-md-4">
-                {% if student.image %}
+                {% if student and student.image %}
                     <img src="{{ student.image.url }}" alt="profile image" class="w-100 rounded-circle">
                 {% endif %}
               
@@ -13,10 +13,11 @@
                 <h3>{{ user.first_name }} {{ user.last_name }}</h3>
                 <h6>UserID: {{ user.username }}</h6>
                 <hr>
+                {% if student %}
                 <p>Phone: {{ student.phone }}</p>
-                <p>School: {{ student.school_name }}</p>
-                <p>Joining Class: {{ student.joining_class }}</p>
+                <p>School: {{ student.school.name }}</p>
                 <p>Current Class: {{ student.current_class }}</p>
+                {% endif %}
             </div>
             <div class="col-md-2">
                 <a href="{% url "set_password" %}" class="btn btn-dark w-100 mt-3">Change Password</a>
