@@ -4,7 +4,7 @@
 <div class='d-flex w-75 m-auto pb-3 notice-board'>
     <marquee class='mt-1 my-text'>{{ notice.notice }}</marquee>            
     {% if request.user.is_authenticated and request.user.is_superuser %}
-    <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#updateNoticeModal">U</button>
+    <button class="btn btn-outline-dark p-1" data-bs-toggle="modal" data-bs-target="#updateNoticeModal"><i class="fa fa-edit" ></i></button>
     {% endif %}
 </div>
 

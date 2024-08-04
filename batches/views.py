@@ -39,7 +39,7 @@ def batchDetails(request, id):
             Q(user__first_name__icontains=search_query) |
             Q(user__last_name__icontains=search_query) |
             Q(phone__icontains=search_query) |
-            Q(school_name__icontains=search_query) |
+            Q(school__name__icontains=search_query) |
             Q(current_class__icontains=search_query)
         )
     else:

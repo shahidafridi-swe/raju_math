@@ -7,6 +7,9 @@ from .models import Banner, SuccessStudent, NoticeBoard
 from students.models import Student
 from django.contrib.auth.decorators import login_required
 from .forms import NoticeBoardForm
+from django.contrib.auth.decorators import user_passes_test
+def superuser_required(user):
+    return user.is_superuser
 
 def home(request):
     banners = Banner.objects.all()
@@ -63,6 +66,7 @@ def logoutUser(request):
     return redirect('login')
 
 
+@login_required(login_url='login')
 def setPassword(request):
     if request.method == 'POST':
         form = SetPasswordForm(user=request.user, data=request.POST)
@@ -78,6 +82,7 @@ def setPassword(request):
     return render(request, 'core/change_password.html',{'form':form, 'type':'Change Password'})
 
 
+@user_passes_test(superuser_required, login_url='home')
 def noticeUpdate(request, pk):
     notice = get_object_or_404(NoticeBoard, pk=pk)
     form = NoticeBoardForm(instance=notice)

@@ -9,9 +9,9 @@
         <div class='d-flex justify-content-between'>
             <h3 class='text-uppercase text-white'>{{ type }} batch</h3>
             {% if type == 'UPDATE' %}
-                <a class='btn btn-outline-dark rounded-pill' href="{% url 'batch_details' batch.id %}">&#10094;</a>
+                <a class='btn btn-outline-light rounded-pill' href="{% url 'batch_details' batch.id %}">&#10094;</a>
             {% else %}
-                <a class='btn btn-outline-dark rounded-pill' href="{% url 'batches' %}">&#10094;</a>
+                <a class='btn btn-outline-light rounded-pill' href="{% url 'batches' %}">&#10094;</a>
             {% endif %}
         </div>
         
