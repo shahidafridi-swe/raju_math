@@ -40,8 +40,9 @@ def batchDetails(request, id):
             Q(user__last_name__icontains=search_query) |
             Q(phone__icontains=search_query) |
             Q(school__name__icontains=search_query) |
-            Q(current_class__icontains=search_query)
-        )
+            Q(current_class__name__icontains=search_query) 
+            # Q(subjects__name__icontains=search_query)      # Assuming subject has a 'name' field
+            ).distinct()
     else:
         students = None
 

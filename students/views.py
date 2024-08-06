@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
-from .models import Student
-from .forms import StudentForm
+from .models import Student, Payment
+from .forms import StudentForm,PaymentForm
 from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm, SetPasswordForm
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
@@ -37,17 +37,23 @@ def students(request):
     return render(request, 'students/students_list.html', context)
 
 
+
 @user_passes_test(superuser_required, login_url='home')
 def studentDetails(request, id):
     cur_month = datetime.datetime.now().month
     cur_year = datetime.datetime.now().year
     student = get_object_or_404(Student, id=id)
+    form = PaymentForm(student=student)
+    payments = Payment.objects.all()
     context = {
         "student": student,
         "month": cur_month,
-        "year": cur_year
+        "year": cur_year,
+        "form": form,
+        "payments": payments
     }
     return render(request, 'students/student_details.html', context)
+
 
 @user_passes_test(superuser_required, login_url='home')
 def addStudent(request):
@@ -67,3 +73,18 @@ def addStudent(request):
         form = StudentForm()
     
     return render(request, 'students/add_student.html', {'form': form})
+
+def payment_view(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    if request.method == 'POST':
+        form = PaymentForm(request.POST, student=student)
+        if form.is_valid():
+            payment = form.save(commit=False)
+            payment.student = student
+            payment.save()
+            messages.success(request, 'Payment recorded successfully!')
+            return redirect('student_details', id=student.id)
+    else:
+        form = PaymentForm(initial={'year': datetime.datetime.now().year}, student=student)
+
+    return render(request, 'students/student_details.html', {'form': form, 'student': student})

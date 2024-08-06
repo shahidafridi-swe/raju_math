@@ -1,8 +1,6 @@
 {% extends "base.html" %}
-
 {% block content %}
-
-
+{% load crispy_forms_tags %}
     <div class="container mt-3">
         <div class='d-flex justify-content-between mb-2'>
             <h3 class='text-uppercase my-text fw-bold'>Student Profile</h3>
@@ -21,7 +19,6 @@
                 <h6>Current Month: {{month}}</h6>
                 <h6>Current year: {{year}}</h6>
                 <hr>
-
                 <p>Phone: {{student.phone}}</p>
                 <p>School: {{student.school.name}}</p>
                 <p>Joining Class: {{student.joining_class}}</p>
@@ -30,11 +27,70 @@
             <div class="col-md-2">
                 <a href="" class="btn btn-outline-dark w-100 my-2">Update</a>
                 <a href="" class="btn btn-outline-dark w-100 my-2">Delete</a>
+                <button class="btn btn-outline-dark w-100 my-2" data-bs-toggle="modal" data-bs-target="#updateNoticeModal">Payment</button>
             </div>
-
+        </div>
+    </div>
+    <div class="container p-3 border border-dark rounded">
+        <h3>Payment History ({{payments.count}})</h3>
+        <hr>
+                
+        <div class="container table-responsive ">
+            <table class="table table-success table-hover ">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Month</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Payment Date</th>
+                    <th scope="col">Current Month Payment</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <th scope="row">{{student.id}}</th>
+                        <td>{{student.user.first_name}} {{student.user.last_name}}</td>
+                        <td>{{student.phone}}</td>
+                        <td>{{student.current_class}}</td>
+                        <td>{{student.school.name}}</td>
+                        <td>Due</td>
+                        <td><a href="{% url "student_details" student.id %}" class="btn btn-warning ">View</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
 
     </div>
-
-
+    
+    <!-- Modal -->
+    <div class="modal fade" id="updateNoticeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateNoticeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header brand-color">
+                    <h1 class="modal-title fs-5 text-white" id="updateNoticeModalLabel">Payment Form for {{student.user.first_name}} {{student.user.last_name}}</h1>
+                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-banner pb-0">
+                    <form method="post" action="{% url 'payment_view' student.id %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.amount|as_crispy_field }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.month|as_crispy_field }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.year|as_crispy_field }}
+                        </div>
+                        <input type="hidden" name="student" value="{{ student.id }}">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

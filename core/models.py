@@ -8,6 +8,13 @@ class Banner(models.Model):
         return self.title
 
 
+class CurrentClass(models.Model):
+    name = models.CharField(max_length=50)
+    
+    def __str__(self) -> str:
+        return self.name
+
+
 class SuccessStudent(models.Model):
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to='success_students', blank=True, null=True)

@@ -60,3 +60,7 @@
     color : black;
     transition: 0.3s;
 }
+
+#div_id_subjects .form-check-label{
+    color : white;
+}

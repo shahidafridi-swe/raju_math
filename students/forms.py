@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Student
+from .models import Student,Payment
+import datetime
 
 class StudentForm(forms.ModelForm):
     first_name = forms.CharField(max_length=30, required=True)
@@ -10,9 +11,10 @@ class StudentForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'email', 'phone', 'image', 'school', 'joining_class', 'current_class', 'address']
+        fields = ['first_name', 'last_name', 'email', 'phone', 'image', 'school', 'subjects' ,'current_class', 'address']
         widgets = {
-            'address': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Student Address'})
+            'address': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Student Address'}),
+            'subjects': forms.CheckboxSelectMultiple(),  # This will display the subjects as checkboxes
         }
 
     def save(self, commit=True):
@@ -34,7 +36,25 @@ class StudentForm(forms.ModelForm):
 
         student = super().save(commit=False)
         student.user = user
+        student.joining_class = student.current_class.name  # Assuming current_class has a 'name' field
         if commit:
             student.save()
+            self.save_m2m()  # Save many-to-many relationships
         return student
-       
+
+
+
+class PaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = ['amount', 'month', 'year']
+        widgets = {
+            'month': forms.Select(choices=Payment.MONTH_CHOICES),
+            'year': forms.Select(choices=[(year, year) for year in range(2024, datetime.datetime.now().year + 2)])
+        }
+
+    def __init__(self, *args, **kwargs):
+        student = kwargs.pop('student', None)
+        super(PaymentForm, self).__init__(*args, **kwargs)
+        if student:
+            self.fields['student'] = forms.ModelChoiceField(queryset=Student.objects.filter(id=student.id), initial=student, widget=forms.HiddenInput())

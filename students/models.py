@@ -1,29 +1,36 @@
 from django.db import models
 from django.contrib.auth.models import User 
+from core.models import CurrentClass
+from django.core.validators import MinValueValidator, MaxValueValidator
+import datetime
 
 class School(models.Model):
     name = models.CharField(max_length=255)
-    
     def __str__(self):
+        return self.name
+    
+class Subject(models.Model):
+    name = models.CharField(max_length=50)
+    def __str__(self) -> str:
         return self.name
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=11)
     image = models.ImageField(upload_to='students/images', blank=True, null=True)
-    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
+    subjects = models.ManyToManyField(Subject, blank=True, related_name="students")
     joining_class = models.CharField(max_length=10, blank=True, null=True)
-    current_class = models.CharField(max_length=10)
+    current_class = models.ForeignKey(CurrentClass, on_delete=models.SET_NULL, null=True)
     address = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self) -> str:
-        return self.user.username
+        return self.user.username   
       
    
-   
-    
+
 class Payment(models.Model):
     MONTH_CHOICES = [
         (1, 'January'),
@@ -42,9 +49,12 @@ class Payment(models.Model):
 
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     payment_date = models.DateField(auto_now_add=True)
-    amount = models.IntegerField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     month = models.IntegerField(choices=MONTH_CHOICES)
-    year = models.IntegerField()
+    year = models.IntegerField(validators=[MinValueValidator(2000), MaxValueValidator(datetime.datetime.now().year + 1)])
 
     def __str__(self) -> str:
-        return f'{self.student.user.username} - {self.amount} - {self.month}/{self.year}'
+        return f'{self.student.user.username} - {self.amount} - {self.get_month_display()}/{self.year}'
+
+    def get_month_display(self):
+        return dict(self.MONTH_CHOICES).get(self.month)
