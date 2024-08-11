@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Banner, SuccessStudent, NoticeBoard
 from students.models import Student
+from batches.models import Batch
 from django.contrib.auth.decorators import login_required
 from .forms import NoticeBoardForm
 from django.contrib.auth.decorators import user_passes_test
@@ -13,6 +14,7 @@ def superuser_required(user):
 
 def home(request):
     banners = Banner.objects.all()
+    batches = Batch.objects.all()
     successStudents = SuccessStudent.objects.all()
     notice = NoticeBoard.objects.latest('last_update')  # Assuming you want to show the latest notice
     form = NoticeBoardForm(instance=notice)
@@ -21,7 +23,8 @@ def home(request):
         'banners': banners,
         'successStudents': successStudents,
         'notice': notice,
-        'form': form
+        'form': form,
+        'batches':batches
     }
     return render(request, 'core/home.html', context)
 

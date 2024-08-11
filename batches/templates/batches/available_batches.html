@@ -1,0 +1,28 @@
+
+<div class="container table-responsive rounded ">
+    <table class="table table-success table-hover ">
+        <thead >
+          <tr >
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Day</th>
+            <th scope="col">Time</th>
+            <th scope="col">Class</th>
+            <th scope="col">Available Seat</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for batch in batches %}
+            <tr>
+                <th scope="row">{{batch.id}}</th>
+                <td>{{batch.title}}</td>
+                <td>{{batch.day}}</td>
+                <td>{{batch.time}}</td>
+                <td>{{batch.level}}</td>
+                <td>{{batch.is_active}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</div>
+
