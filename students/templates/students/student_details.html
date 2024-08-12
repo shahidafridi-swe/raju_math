@@ -27,7 +27,7 @@
             <div class="col-md-2">
                 <a href="" class="btn btn-outline-dark w-100 my-2">Update</a>
                 <a href="" class="btn btn-outline-dark w-100 my-2">Delete</a>
-                <button class="btn btn-outline-dark w-100 my-2" data-bs-toggle="modal" data-bs-target="#updateNoticeModal">Payment</button>
+                
             </div>
         </div>
     </div>
@@ -43,21 +43,31 @@
                     <th scope="col">Amount</th>
                     <th scope="col">Month</th>
                     <th scope="col">Year</th>
-                    <th scope="col">Payment Date</th>
-                    <th scope="col">Current Month Payment</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">Status</th>
                 </tr>
                 </thead>
                 <tbody>
-                    {% for student in students %}
+                    {% for payment in payments %}
                     <tr>
-                        <th scope="row">{{student.id}}</th>
-                        <td>{{student.user.first_name}} {{student.user.last_name}}</td>
-                        <td>{{student.phone}}</td>
-                        <td>{{student.current_class}}</td>
-                        <td>{{student.school.name}}</td>
-                        <td>Due</td>
-                        <td><a href="{% url "student_details" student.id %}" class="btn btn-warning ">View</a></td>
+                        <th scope="row">{{payment.id}}</th>
+                        <td>
+                            {% if payment.amount %}
+                            {{payment.amount}} BDT
+                            {% else %}
+                            -
+                            {% endif %}
+                        </td>
+                        <td>{{payment.month}}</td>
+                        <td>{{payment.year}}</td>
+                        <td>
+                            {% if payment.is_paid %}
+                            Paid on {{payment.payment_date}}
+                            {% else %}
+                            <a class="btn btn-dark " data-bs-toggle="modal" data-bs-target="#updateNoticeModal" href="{% url 'pay_payment' payment.id %}">Pay</a>
+
+                            {% comment %} <button class="btn btn-dark " data-bs-toggle="modal" data-bs-target="#updateNoticeModal">Pay Now</button> {% endcomment %}
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -65,7 +75,7 @@
         </div>
 
     </div>
-    
+  
     <!-- Modal -->
     <div class="modal fade" id="updateNoticeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateNoticeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -75,18 +85,15 @@
                     <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body bg-banner pb-0">
-                    <form method="post" action="{% url 'payment_view' student.id %}">
+                    <form method="post" >
                         {% csrf_token %}
                         <div class="mb-3">
                             {{ form.amount|as_crispy_field }}
                         </div>
                         <div class="mb-3">
-                            {{ form.month|as_crispy_field }}
+                            {{ form.payment_date|as_crispy_field }}
                         </div>
-                        <div class="mb-3">
-                            {{ form.year|as_crispy_field }}
-                        </div>
-                        <input type="hidden" name="student" value="{{ student.id }}">
+                       
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>

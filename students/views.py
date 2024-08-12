@@ -2,14 +2,14 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from .models import Student, Payment
-from .forms import StudentForm,PaymentForm
+from .forms import StudentForm, PaymentForm
 from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm, SetPasswordForm
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import user_passes_test
 from django import forms
 import datetime
-
+from django.utils import timezone
 
 def superuser_required(user):
     return user.is_superuser
@@ -43,8 +43,8 @@ def studentDetails(request, id):
     cur_month = datetime.datetime.now().month
     cur_year = datetime.datetime.now().year
     student = get_object_or_404(Student, id=id)
-    form = PaymentForm(student=student)
-    payments = Payment.objects.all()
+    form = PaymentForm()
+    payments = Payment.objects.filter(student=student).order_by('year', 'month')
     context = {
         "student": student,
         "month": cur_month,
@@ -88,3 +88,19 @@ def payment_view(request, student_id):
         form = PaymentForm(initial={'year': datetime.datetime.now().year}, student=student)
 
     return render(request, 'students/student_details.html', {'form': form, 'student': student})
+
+def pay_payment(request, payment_id):
+    payment = get_object_or_404(Payment, pk=payment_id)
+    if request.method == 'POST':
+        form = PaymentForm(request.POST, instance=payment)
+        if form.is_valid():
+            payment = form.save(commit=False)
+            payment.is_paid = True
+            payment.payment_date = timezone.now()
+            payment.save()
+            messages.success(request, 'Payment recorded successfully!')
+            return redirect('student_details', id=payment.student.id)
+    else:
+        form = PaymentForm(instance=payment)
+        
+    return render(request, 'students/student_details.html', {'form': form})

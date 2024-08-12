@@ -59,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'students.middlewares.PaymentGenerationMiddleware',
 ]
 
 ROOT_URLCONF = 'raju_math.urls'

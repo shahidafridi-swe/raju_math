@@ -47,14 +47,5 @@ class StudentForm(forms.ModelForm):
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
-        fields = ['amount', 'month', 'year']
-        widgets = {
-            'month': forms.Select(choices=Payment.MONTH_CHOICES),
-            'year': forms.Select(choices=[(year, year) for year in range(2024, datetime.datetime.now().year + 2)])
-        }
-
-    def __init__(self, *args, **kwargs):
-        student = kwargs.pop('student', None)
-        super(PaymentForm, self).__init__(*args, **kwargs)
-        if student:
-            self.fields['student'] = forms.ModelChoiceField(queryset=Student.objects.filter(id=student.id), initial=student, widget=forms.HiddenInput())
+        fields = ['amount', 'payment_date']
+    
