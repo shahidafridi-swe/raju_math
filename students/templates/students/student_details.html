@@ -15,9 +15,7 @@
             <div class="col-md-6 ">
                 <h3>{{student.user.first_name}} {{student.user.last_name}}</h3>
                 <h4>UserID: {{student.user.username}}</h4>
-                <hr>
-                <h6>Current Month: {{month}}</h6>
-                <h6>Current year: {{year}}</h6>
+                
                 <hr>
                 <p>Phone: {{student.phone}}</p>
                 <p>School: {{student.school.name}}</p>
@@ -69,6 +67,33 @@
                             {% endif %}
                         </td>
                     </tr>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="updateNoticeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateNoticeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header brand-color">
+                                    <h1 class="modal-title fs-5 text-white" id="updateNoticeModalLabel">Payment Form for {{student.user.first_name}} {{student.user.last_name}}</h1>
+                                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body bg-banner pb-0">
+                                    <form method="post" action="{% url 'pay_payment' payment.id %}">
+                                        {% csrf_token %}
+                                        <div class="mb-3">
+                                            {{ form.amount|as_crispy_field }}
+                                        </div>
+                                        <div class="mb-3">
+                                            {{ form.payment_date|as_crispy_field }}
+                                        </div>
+                                    
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     {% endfor %}
                 </tbody>
             </table>
@@ -76,28 +101,5 @@
 
     </div>
   
-    <!-- Modal -->
-    <div class="modal fade" id="updateNoticeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateNoticeModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header brand-color">
-                    <h1 class="modal-title fs-5 text-white" id="updateNoticeModalLabel">Payment Form for {{student.user.first_name}} {{student.user.last_name}}</h1>
-                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body bg-banner pb-0">
-                    <form method="post" >
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            {{ form.amount|as_crispy_field }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.payment_date|as_crispy_field }}
-                        </div>
-                       
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 {% endblock content %}

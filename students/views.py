@@ -89,6 +89,7 @@ def payment_view(request, student_id):
 
     return render(request, 'students/student_details.html', {'form': form, 'student': student})
 
+
 def pay_payment(request, payment_id):
     payment = get_object_or_404(Payment, pk=payment_id)
     if request.method == 'POST':
@@ -96,11 +97,10 @@ def pay_payment(request, payment_id):
         if form.is_valid():
             payment = form.save(commit=False)
             payment.is_paid = True
-            payment.payment_date = timezone.now()
             payment.save()
             messages.success(request, 'Payment recorded successfully!')
             return redirect('student_details', id=payment.student.id)
     else:
         form = PaymentForm(instance=payment)
         
-    return render(request, 'students/student_details.html', {'form': form})
+    return render(request, 'students/student_details.html', {'form': form, 'payment': payment})

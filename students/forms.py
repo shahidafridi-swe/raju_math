@@ -48,4 +48,11 @@ class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
         fields = ['amount', 'payment_date']
-    
+        widgets = {
+            'payment_date': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['amount'].required = True
+        self.fields['payment_date'].required = True
