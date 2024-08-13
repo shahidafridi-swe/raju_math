@@ -31,7 +31,8 @@
             <th scope="col">Phone</th>
             <th scope="col">Class</th>
             <th scope="col">School</th>
-            <th scope="col">Current Month Payment</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Payment Status</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -43,7 +44,18 @@
                 <td>{{student.phone}}</td>
                 <td>{{student.current_class}}</td>
                 <td>{{student.school.name}}</td>
-                <td>Due</td>
+                <td>
+                    {% for subject in student.subjects.all %}
+                        {{ subject.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% if student.payment_due_month_count > 0 %}
+                        <span class="text-danger fw-bold">{{ student.payment_due_month_count }} Month{{ student.payment_due_month_count|pluralize }} Due</span>
+                    {% else %}
+                        <span class="text-success fw-bold">All Paid</span>
+                    {% endif %}
+                </td>
                 <td><a href="{% url "student_details" student.id %}" class="btn btn-warning ">View</a></td>
             </tr>
             {% endfor %}

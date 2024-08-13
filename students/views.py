@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from .models import Student, Payment
 from .forms import StudentForm, PaymentForm
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm, SetPasswordForm
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import user_passes_test
@@ -23,12 +23,15 @@ def students(request):
             Q(user__first_name__icontains=search_query) |
             Q(user__last_name__icontains=search_query) |
             Q(phone__icontains=search_query) |
-            Q(school__name__icontains=search_query) |
-            Q(current_class__icontains=search_query)
+            Q(school__name__icontains=search_query) |  # Correct usage
+            Q(current_class__name__icontains=search_query)  # Correct usage
         )
     else:
         students = Student.objects.all()
-    
+     # Annotate each student with the count of distinct unpaid months
+    students = students.annotate(
+        unpaid_months_count=Count('payment__month', filter=Q(payment__is_paid=False), distinct=True)
+    )
     context = {
         'students': students,
         'search_query': search_query
@@ -74,20 +77,6 @@ def addStudent(request):
     
     return render(request, 'students/add_student.html', {'form': form})
 
-def payment_view(request, student_id):
-    student = get_object_or_404(Student, id=student_id)
-    if request.method == 'POST':
-        form = PaymentForm(request.POST, student=student)
-        if form.is_valid():
-            payment = form.save(commit=False)
-            payment.student = student
-            payment.save()
-            messages.success(request, 'Payment recorded successfully!')
-            return redirect('student_details', id=student.id)
-    else:
-        form = PaymentForm(initial={'year': datetime.datetime.now().year}, student=student)
-
-    return render(request, 'students/student_details.html', {'form': form, 'student': student})
 
 
 def pay_payment(request, payment_id):
@@ -104,3 +93,8 @@ def pay_payment(request, payment_id):
         form = PaymentForm(instance=payment)
         
     return render(request, 'students/student_details.html', {'form': form, 'payment': payment})
+
+def payments_list(request):
+    student = request.user.student
+    payments = Payment.objects.filter(student=student)
+    return render(request, 'students/payments_list.html', {'payments': payments})

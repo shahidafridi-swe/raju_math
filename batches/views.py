@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect,get_object_or_404
 from .models import Batch
 from .forms import BatchForm
 from students.models import Student
-from django.db.models import Q
+from django.db.models import Q,Count
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 
@@ -45,7 +45,8 @@ def batchDetails(request, id):
             ).distinct()
     else:
         students = None
-
+    
+    
     if request.method == 'POST':
         student_id = request.POST.get('student_id')
         if student_id:

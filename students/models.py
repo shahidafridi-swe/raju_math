@@ -30,7 +30,9 @@ class Student(models.Model):
     def __str__(self) -> str:
         return self.user.username   
       
-   
+    def payment_due_month_count(self):
+        unpaid_month =Payment.objects.filter(student=self, is_paid=False)
+        return len(unpaid_month)
 
 class Payment(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)

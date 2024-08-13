@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-3 p-3 border border-dark rounded">
+    <h3>Payment History ({{payments.count}})</h3>
+    <h4>
+        {% if request.user.student.payment_due_month_count > 0 %}
+            <span class="text-danger fw-bold">{{ request.user.student.payment_due_month_count }} Month{{ request.user.student.payment_due_month_count|pluralize }} Due</span>
+        {% else %}
+            <span class="text-success fw-bold">All Paid</span>
+        {% endif %}
+    </h4>
+    <hr>
+            
+    <div class="container table-responsive ">
+        <table class="table table-success table-hover ">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Month</th>
+                <th scope="col">Year</th>
+                <th scope="col">Payment Status</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <th scope="row">{{payment.id}}</th>
+                    <td>
+                        {% if payment.amount %}
+                        {{payment.amount}} BDT
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td>{{payment.month}}</td>
+                    <td>{{payment.year}}</td>
+                    <td>
+                        {% if payment.is_paid %}
+                        Paid on {{payment.payment_date}}
+                        {% else %}
+                        Due
+                        {% endif %}
+                    </td>
+                </tr>
+
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock content %}
