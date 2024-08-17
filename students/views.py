@@ -94,7 +94,15 @@ def pay_payment(request, payment_id):
         
     return render(request, 'students/student_details.html', {'form': form, 'payment': payment})
 
+
 def payments_list(request):
-    student = request.user.student
-    payments = Payment.objects.filter(student=student)
+    if request.user.is_superuser:
+        payments = Payment.objects.filter(is_paid=True).order_by('-payment_date')
+    else:
+        student = getattr(request.user, 'student', None)
+        if student is not None:
+            payments = Payment.objects.filter(student=student)
+        else:
+            payments = []  # Handle case where the user is not a student and not a superuser
+
     return render(request, 'students/payments_list.html', {'payments': payments})
