@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core',
     'students',
     'batches',
+    'exams',
     "crispy_forms",
     "crispy_bootstrap5",
 ]

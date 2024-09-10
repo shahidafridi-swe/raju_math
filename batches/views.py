@@ -5,6 +5,8 @@ from students.models import Student
 from django.db.models import Q,Count
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
+from exams.models import Exam, StudentExamMark
+from exams.forms import ExamForm
 
 def superuser_required(user):
     return user.is_superuser
@@ -32,36 +34,50 @@ def batches(request):
 
 @user_passes_test(superuser_required, login_url='home')
 def batchDetails(request, id):
-    batch = Batch.objects.get(id=id)
+    batch = get_object_or_404(Batch, id=id)
     search_query = request.GET.get('search_query', '')
+    
     if search_query:
         students = Student.objects.filter(
             Q(user__first_name__icontains=search_query) |
             Q(user__last_name__icontains=search_query) |
             Q(phone__icontains=search_query) |
             Q(school__name__icontains=search_query) |
-            Q(current_class__name__icontains=search_query) 
-            # Q(subjects__name__icontains=search_query)      # Assuming subject has a 'name' field
-            ).distinct()
+            Q(current_class__name__icontains=search_query)
+        ).distinct()
     else:
         students = None
     
-    
+    exams = Exam.objects.filter(batch=batch)
+
     if request.method == 'POST':
-        student_id = request.POST.get('student_id')
-        if student_id:
+        if 'student_id' in request.POST:
+            # Adding student to batch
+            student_id = request.POST.get('student_id')
             student = Student.objects.get(id=student_id)
             batch.students.add(student)
-            batch.save()
             return redirect('batch_details', id=batch.id)
+        else:
+            # Adding new exam
+            exam_form = ExamForm(request.POST)
+            if exam_form.is_valid():
+                new_exam = exam_form.save(commit=False)
+                new_exam.batch = batch
+                new_exam.save()
+                return redirect('batch_details', id=batch.id)
+    else:
+        exam_form = ExamForm()
 
     context = {
         'students': students,
         'search_query': search_query,
-        "batch": batch
+        'batch': batch,
+        'exams': exams,
+        'exam_form': exam_form
     }
    
     return render(request, "batches/batch_details.html", context)
+
 
 @user_passes_test(superuser_required, login_url='home')
 def add_batch(request):
@@ -112,3 +128,4 @@ def delete_batch(request, pk):
         'batch': batch
     }
     return render(request, 'batches/batch_confirm_delete.html', context)
+

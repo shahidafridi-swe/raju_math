@@ -1,17 +1,17 @@
 
 
 .brand-color {
-    background-color: #495632;
+    background-color: rgb(4, 69, 76);
 }
 .logo-color{
     color: rgb(253, 253, 253);
 }
 .bg-banner{
-    background-color: #87986A;
+    background: linear-gradient(180deg, rgba(27,139,115,1) 0%, rgba(4,69,76,1) 65%);
     /* background: linear-gradient(180deg, rgb(235, 123, 4) 0%, rgb(232, 113, 2) 65%); */
 }
 .my-text{
-    color: #9faa8a;
+    color: rgb(4, 69, 76);
     font-weight: bold;
 }
 

@@ -1,0 +1,36 @@
+
+<div class="border rounded p-3">
+    <div class='d-flex justify-content-between'>
+        <h3 class='text-uppercase text-white'>Exams:</h3>
+        <a class="btn bg-banner text-white border p-2" href="{% url 'add_batch' %}">Add Exam</a>
+
+    </div>
+    <hr>
+    {% if exams %}
+    <div class="container table-responsive">
+        <table class="table table-success table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exam in exams %}
+                <tr>
+                    <th scope="row">{{ exam.id }}</th>
+                    <td>{{ exam.title }}</td>
+                    <td>
+                        <a class="btn btn-warning" href={% url "exam_details" exam.id %}>Details</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    
+
+</div>

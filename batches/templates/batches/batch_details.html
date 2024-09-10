@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content  %}
+{% load crispy_forms_tags %}
 
 <div class="row border mt-3 rounded">
     <div class="col-md-3 p-3 border-end">
@@ -66,6 +67,7 @@
 
 <div>
     <div class="mt-5">
+        <h3 class="text-white text-center">Search Students Here For Add This Batch</h3>
         <div class="container text-center pb-3">
             <form id="searchForm" action="" method="get">
                     <div class="input-group m-auto">
@@ -95,7 +97,7 @@
                     <td>{{ student.user.first_name }} {{ student.user.last_name }}</td>
                     <td>{{ student.phone }}</td>
                     <td>{{ student.current_class }}</td>
-                    <td>{{ student.school_name }}</td>
+                    <td>{{ student.school.name }}</td>
                     <td>
                         {% if student in batch.students.all %}
                         <button class="btn btn-warning" disabled>Already Added</button>
@@ -115,5 +117,66 @@
 {% endif %}
 
 </div>
+<hr>
+
+
+
+<div class="border rounded p-3">
+    <div class='d-flex justify-content-between'>
+        <h3 class='text-uppercase text-white'>Exams:</h3>
+        <button class="btn btn-outline-dark p-1" data-bs-toggle="modal" data-bs-target="#addExamFormModal"><i class="fa fa-edit" ></i> Add Exam</button>
+
+
+    </div>
+    <hr>
+    {% if exams %}
+    <div class="container table-responsive">
+        <table class="table table-success table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exam in exams %}
+                <tr>
+                    <th scope="row">{{ exam.id }}</th>
+                    <td>{{ exam.title }}</td>
+                    <td>
+                        <a class="btn btn-warning" href={% url "exam_details" exam.id %}>Details</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    
+
+</div>
+
+<!-- Add Exam Form Modal -->
+<div class="modal fade" id="addExamFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addExamFormModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header brand-color ">
+                <h1 class="modal-title fs-5 text-white" id="addExamFormModalLabel">Add Exam Form</h1>
+                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-banner pb-0">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {{ exam_form|crispy }}
+                    <button type="submit" class="btn btn-primary">Add Exam</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 {% endblock content %}
