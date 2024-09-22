@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<section class="container">
+    
 <div class="container row mt-3">
     <div class="col-md-8">
         <h3 class="my-text">{{students.count}} STUDENT{{students|pluralize:'S'}}:</h3>
@@ -62,5 +63,6 @@
         </tbody>
       </table>
 </div>
+</section>
 
 {% endblock content %}

@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<section class="container">
+    
 <div class="container mt-3 p-3 border border-dark rounded">
     <h3>Payment History ({{payments.count}})</h3>
     {% if not request.user.is_superuser %}
@@ -67,5 +68,6 @@
     </div>
 
 </div>
+</section>
 
 {% endblock content %}

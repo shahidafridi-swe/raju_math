@@ -2,61 +2,61 @@
 
 {% block content  %}
 {% load crispy_forms_tags %}
-
-<div class="row border mt-3 rounded">
+<section class="container">
+    
+<div class="row border mt-3 rounded brand-color text-white">
     <div class="col-md-3 p-3 border-end">
         <div class='d-flex justify-content-between'>
             <h3 class='text-uppercase text-white'>{{ batch.title }}</h3>
-            <a class='btn btn-outline-dark rounded-pill' href="{% url 'batches' %}">&#10094;</a>
+            <a class='btn btn-outline-light rounded-pill' href="{% url 'batches' %}">&#10094;</a>
         </div>
         <h6>Time: {{ batch.time }}</h6>
         <h5>Monthly Fee: {{ batch.fee }} BDT</h5>
         <hr>
         <div class="p-3">
-            <a href="{% url "update_batch" batch.id %}" class="btn btn-outline-dark w-100 m-2 p-2">Update</a>
-            <a href="{% url "delete_batch" batch.id %}" class="btn btn-outline-dark w-100 m-2 p-2">Delete</a>
+            <a href="{% url "update_batch" batch.id %}" class="btn btn-outline-light w-100 m-2 p-2">Update</a>
+            <a href="{% url "delete_batch" batch.id %}" class="btn btn-outline-light w-100 m-2 p-2">Delete</a>
         </div>
     </div>
 
-    <div class="col-md-9">
-        <h4 class="my-text p-3 pb-0">{{batch.students.all.count}} STUDENT{{batch.students.all|pluralize:'S'}}:</h4>
+    <div class="col-md-9 ">
+        <h4 class="text-white p-3 pb-0">{{batch.students.all.count}} STUDENT{{batch.students.all|pluralize:'S'}}:</h4>
 
         <hr>
-        <div class="table-responsive">
-            <table class="table table-dark table-hover border rounded">
+        <div class="pb-2 table-responsive">
+            <table class="table table-hover border align-middle text-center m-0">
                 <thead>
                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Class</th>
-                        <th scope="col">School</th>
-                        <th scope="col">Subject</th>
-                        <th scope="col">Payment Status</th>
-                        <th scope="col">Action</th>
+                        <th class="bg-dark text-white" scope="col">ID</th>
+                        <th class="bg-dark text-white" scope="col">Name</th>
+                        <th class="bg-dark text-white" scope="col">Class</th>
+                        <th class="bg-dark text-white" scope="col">Subject</th>
+                        <th class="bg-dark text-white" scope="col">Payment Status</th>
+                        <th class="bg-dark text-white" scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for student in batch.students.all %}
                     <tr>
-                        <th scope="row">{{student.id}}</th>
-                        <td>{{student.user.first_name}} {{student.user.last_name}}</td>
-                        <td>{{student.phone}}</td>
-                        <td>{{student.current_class}}</td>
-                        <td>{{student.school.name}}</td>
-                        <td>
+                        <th class="bg-transparent text-white" scope="row">{{student.id}}</th>
+                        <td class="bg-transparent text-white">{{student.user.first_name}} {{student.user.last_name}}</td>
+                        <td class="bg-transparent text-white">{{student.current_class}}</td>
+                        <td class="bg-transparent text-white">
                             {% for subject in student.subjects.all %}
                                 {{ subject.name }}{% if not forloop.last %}, {% endif %}
                             {% endfor %}
                         </td>
-                        <td>
+                        <td class="bg-transparent text-white">
                             {% if student.payment_due_month_count > 0 %}
                                 <span class="text-danger fw-bold">{{ student.payment_due_month_count }} Month{{ student.payment_due_month_count|pluralize }} Due</span>
                             {% else %}
                                 <span class="text-success fw-bold">All Paid</span>
                             {% endif %}
                         </td>
-                        <td><a href="{% url "student_details" student.id %}" class="btn btn-warning ">View</a></td>
+                        <td class="bg-transparent text-white">
+                            <a href="{% url "student_details" student.id %}" class="btn btn-outline-light "><i class="fa-regular fa-eye"></i></a>
+                            <a href="{% url "student_details" student.id %}" class="btn btn-outline-danger m-1"><i class="fa-regular fa-circle-xmark "></i></a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -65,47 +65,47 @@
     </div>
 </div>
 
-<div>
-    <div class="mt-5">
-        <h3 class="text-white text-center">Search Students Here For Add This Batch</h3>
+<div class="row mt-3  bg-banner border rounded">
+    <div class="p-3 ">
+        <h3 class="text-white  text-center">Search Students Here For Add This Batch</h3>
         <div class="container text-center pb-3">
             <form id="searchForm" action="" method="get">
                     <div class="input-group m-auto">
                         <input type="text" class="form-control p-2" placeholder="Search By Student Name | Phone Number | School | Class" aria-label="Search" name="search_query" value="{{ search_query }}">
-                        <button class="btn bg-banner text-white border" type="submit">Search</button>
+                        <button class="btn bg-banner text-white border" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </div>
             </form>
         </div>
     </div>
 {% if students %}
     <div class="container table-responsive">
-        <table class="table table-success table-hover">
+        <table class="table table-hover border align-middle text-center ">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Class</th>
-                    <th scope="col">School</th>
-                    <th scope="col">Action</th>
+                    <th class="bg-dark text-white" scope="col">ID</th>
+                    <th class="bg-dark text-white" scope="col">Name</th>
+                    <th class="bg-dark text-white" scope="col">Phone</th>
+                    <th class="bg-dark text-white" scope="col">Class</th>
+                    <th class="bg-dark text-white" scope="col">School</th>
+                    <th class="bg-dark text-white" scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for student in students %}
                 <tr>
-                    <th scope="row">{{ student.id }}</th>
-                    <td>{{ student.user.first_name }} {{ student.user.last_name }}</td>
-                    <td>{{ student.phone }}</td>
-                    <td>{{ student.current_class }}</td>
-                    <td>{{ student.school.name }}</td>
-                    <td>
+                    <th class="bg-transparent text-white" scope="row">{{ student.id }}</th>
+                    <td class="bg-transparent text-white">{{ student.user.first_name }} {{ student.user.last_name }}</td>
+                    <td class="bg-transparent text-white">{{ student.phone }}</td>
+                    <td class="bg-transparent text-white">{{ student.current_class }}</td>
+                    <td class="bg-transparent text-white">{{ student.school.name }}</td>
+                    <td class="bg-transparent text-white">
                         {% if student in batch.students.all %}
-                        <button class="btn btn-warning" disabled>Already Added</button>
+                        <button class="btn btn-secondary" disabled>Already Added</button>
                         {% else %}
                         <form method="post" action="">
                             {% csrf_token %}
                             <input type="hidden" name="student_id" value="{{ student.id }}">
-                            <button type="submit" class="btn btn-warning">Add</button>
+                            <button type="submit" class="btn btn-outline-light fw-bold"><i class="fa-solid fa-plus"></i> ADD</button>
                         </form>
                         {% endif %}
                     </td>
@@ -121,10 +121,10 @@
 
 
 
-<div class="border rounded p-3">
+<div class="row border rounded p-3 bg-banner">
     <div class='d-flex justify-content-between'>
         <h3 class='text-uppercase text-white'>Exams:</h3>
-        <button class="btn btn-outline-dark p-1" data-bs-toggle="modal" data-bs-target="#addExamFormModal"><i class="fa fa-edit" ></i> Add Exam</button>
+        <button class="btn btn-outline-light fw-bold px-3" data-bs-toggle="modal" data-bs-target="#addExamFormModal"><i class="fa-solid fa-plus"></i> Add Exam</button>
 
 
     </div>
@@ -166,17 +166,18 @@
                 <h1 class="modal-title fs-5 text-white" id="addExamFormModalLabel">Add Exam Form</h1>
                 <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body bg-banner pb-0">
+            <div class="modal-body bg-banner p-3">
                 <form method="POST" action="">
                     {% csrf_token %}
                     {{ exam_form|crispy }}
-                    <button type="submit" class="btn btn-primary">Add Exam</button>
+                    <button type="submit" class="btn btn-light">Add Exam</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+</section>
 
 
 {% endblock content %}

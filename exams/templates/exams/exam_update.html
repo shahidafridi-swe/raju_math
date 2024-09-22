@@ -2,52 +2,57 @@
 
 {% block content %}
 {% load crispy_forms_tags %}
-<div class="border p-3 mt-3 rounded">
-    <div class='d-flex justify-content-between'>
+<section class="container">
+    
+<div class="border mt-3 rounded">
+    <div class='d-flex justify-content-between bg-banner p-3 rounded'>
         <h3 class='text-uppercase text-white'>Update Exam</h3>
-        <a class='btn btn-outline-dark rounded-pill' href="{% url 'exam_details' exam.id %}">&#10094;</a>
+        <a class='btn btn-outline-light rounded-pill' href="{% url 'exam_details' exam.id %}">&#10094;</a>
     </div>
-    <form method="POST">
-        {% csrf_token %}
-        
-        <!-- Exam form styled with crispy -->
-        <div class="mb-3">
-            {{ exam_form|crispy }}
-        </div>
-
-        <h4>Update Marks</h4>
-        
-        <!-- Include the management form for the formset -->
-        {{ formset.management_form }}
-
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Marks</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">School</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for form in formset %}
-                    <tr>
-                        <td>{{ form.instance.student.user.first_name }} {{ form.instance.student.user.last_name }}</td>
-                        <td>
-                            <!-- Apply crispy form styling to the individual marks form -->
-                            {{ form.marks|as_crispy_field }}
-                            {{ form.id }}
-                        </td>
-                        <td>{{ form.instance.student.phone }}</td>
-                        <td>{{ form.instance.student.school.name }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <button type="submit" class="btn btn-outline-dark w-100">Update</button>
-    </form>
+    <div class="p-3 bg-success-subtle">
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Exam form styled with crispy -->
+            <div  class="mb-3 bg-banner p-3 rounded">
+                {{ exam_form|crispy }}
+            </div>
+    
+            <h4>Update Marks</h4>
+            
+            <!-- Include the management form for the formset -->
+            {{ formset.management_form }}
+    
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle text-center m-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Marks</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">School</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for form in formset %}
+                        <tr>
+                            <td>{{ form.instance.student.user.first_name }} {{ form.instance.student.user.last_name }}</td>
+                            <td class="m-0">
+                                <!-- Apply crispy form styling to the individual marks form -->
+                                {{ form.marks|as_crispy_field }}
+                                {{ form.id }}
+                            </td>
+                            <td>{{ form.instance.student.phone }}</td>
+                            <td>{{ form.instance.student.school.name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    
+            <button type="submit" class="btn btn-outline-dark fw-bold p-2 w-100">UPDATE</button>
+        </form>
+    </div>
 </div>
+</section>
 {% endblock %}

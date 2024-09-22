@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class='d-flex w-75 m-auto pb-3 notice-board'>
-    <marquee class='mt-1 my-text'>{{ notice.notice }}</marquee>            
+<div class='d-flex w-75 m-auto  notice-board'>
+    <marquee class='mt-2 text-danger fw-bold'><h4>{{ notice.notice }}</h4></marquee>            
     {% if request.user.is_authenticated and request.user.is_superuser %}
-    <button class="btn btn-outline-dark p-1" data-bs-toggle="modal" data-bs-target="#updateNoticeModal"><i class="fa fa-edit" ></i></button>
+    <button class="btn btn-outline-dark p-2" data-bs-toggle="modal" data-bs-target="#updateNoticeModal"><i class="fa fa-edit" ></i></button>
     {% endif %}
 </div>
 
@@ -42,8 +42,10 @@
     <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-inner">
             {% for banner in banners %}
-            <div class="px-5  carousel-item {% if forloop.first %}active{% endif %}">
-                <img  src="{{ banner.image.url }}" class="d-block w-100 rounded"  alt="{{ banner.title }}">
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ banner.image.url }}" class="d-block w-100 rounded" style="max-height: 90vh; object-fit: cover; object-position: center;" alt="{{ banner.title }}">
+
+
                 <div class="carousel-caption d-none d-md-block">
                     <h3 class="tbg p-3 rounded">{{ banner.title }}</h3>
                 </div>
@@ -63,14 +65,15 @@
 
 
 {% comment %} available batches part start {% endcomment %}
-<section class="mt-5">
-    <h3 class="my-text text-center">AVAILABLE BATCHES</h3>
+<section class="mt-3  border p-0 bg-dark-subtle rounded">
+    <h3 class="container text-white text-center bg-banner p-3 rounded">AVAILABLE BATCHES</h3>
     {% include "batches/available_batches.html" %}
 </section>
 {% comment %} available batches part end {% endcomment %}
 
 {% comment %} success student info {% endcomment %}
- <h3 class="mt-5 my-text text-center">OUR SUCCESS</h3>
+<section class="container mt-3 p-3 rounded bg-banner">
+    <h3 class="text-white p-3 text-center">OUR SUCCESS</h3>
 <div class="swiffy-slider slider-item-show3 slider-nav-round slider-nav-page ">
     <ul class="slider-container">
         {% for student in successStudents %}
@@ -80,7 +83,7 @@
                 <div class="ratio ratio-1x1">
                     <img src="{{ student.image.url }}" class="card-img-top" loading="lazy" alt="...">
                 </div>
-                <div class="card-body p-3">
+                <div class="card-body bg-success-subtle p-3 rounded">
                     <div class="">
                         <h3 class="my-text">{{student.name}}</h3>
                         <p class="">{{student.school}}</p>
@@ -98,10 +101,11 @@
     <button type="button" class="slider-nav" aria-label="Go left"></button>
     <button type="button" class="slider-nav slider-nav-next" aria-label="Go left"></button>
 </div>
+</section>
 {% comment %} success student info part end  {% endcomment %}
 
 {% comment %} student review part start  {% endcomment %}
- <section class="my-3">
+ <section class="container my-3 ">
     <h3 class="mt-5 my-text text-center">STUDENTS REVIEW</h3>
     <div class="swiffy-slider slider-item-show3 slider-nav-round slider-nav-page ">
         <ul class="slider-container">
