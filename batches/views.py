@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect,get_object_or_404
-from .models import Batch
-from .forms import BatchForm
+from .models import Batch, Attendance
+from .forms import BatchForm, AttendanceDateForm, AttendanceUpdateForm
 from students.models import Student
 from django.db.models import Q,Count
 from django.contrib import messages
@@ -30,13 +30,12 @@ def batches(request):
         'search_query': search_query
     }
     return render(request, 'batches/batches.html', context)
-
-
 @user_passes_test(superuser_required, login_url='home')
 def batchDetails(request, id):
     batch = get_object_or_404(Batch, id=id)
     search_query = request.GET.get('search_query', '')
-    
+
+    # Handle student search
     if search_query:
         students = Student.objects.filter(
             Q(user__first_name__icontains=search_query) |
@@ -47,7 +46,7 @@ def batchDetails(request, id):
         ).distinct()
     else:
         students = None
-    
+
     exams = Exam.objects.filter(batch=batch)
 
     if request.method == 'POST':
@@ -57,8 +56,26 @@ def batchDetails(request, id):
             student = Student.objects.get(id=student_id)
             batch.students.add(student)
             return redirect('batch_details', id=batch.id)
+
+        elif 'date' in request.POST:
+            # Handling attendance form submission
+            attendance_form = AttendanceDateForm(request.POST)
+            if attendance_form.is_valid():
+                date = attendance_form.cleaned_data['date']
+
+                # Check if attendance for the given date and batch already exists
+                if Attendance.objects.filter(batch=batch, date=date).exists():
+                    messages.error(request, f"Attendance for {date} has already been added for this batch.")
+                else:
+                    # Create attendance entries for each student in the batch
+                    for student in batch.students.all():
+                        Attendance.objects.create(student=student, batch=batch, date=date, is_attend=False)
+                    messages.success(request, f"Attendance for {date} added successfully.")
+                
+                return redirect('batch_details', id=batch.id)
+
         else:
-            # Adding new exam
+            # Handling exam form submission
             exam_form = ExamForm(request.POST)
             if exam_form.is_valid():
                 new_exam = exam_form.save(commit=False)
@@ -66,16 +83,19 @@ def batchDetails(request, id):
                 new_exam.save()
                 return redirect('batch_details', id=batch.id)
     else:
+        attendance_form = AttendanceDateForm()
         exam_form = ExamForm()
-
+    attendances = Attendance.objects.filter(batch=batch)
     context = {
         'students': students,
         'search_query': search_query,
         'batch': batch,
         'exams': exams,
-        'exam_form': exam_form
+        'exam_form': exam_form,
+        'attendances':attendances,
+        'attendance_form': attendance_form,  # Pass the attendance form
     }
-   
+
     return render(request, "batches/batch_details.html", context)
 
 

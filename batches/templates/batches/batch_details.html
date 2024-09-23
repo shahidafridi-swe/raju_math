@@ -119,33 +119,88 @@
 </div>
 <hr>
 
+{% comment %} Attendence Part Start {% endcomment %}
+<div class="row border rounded p-3 bg-banner">
+    <div class='d-flex justify-content-between'>
+        <h3 class='text-uppercase text-white'>Attendence:</h3>
+        <button class="btn btn-outline-light fw-bold px-3" data-bs-toggle="modal" data-bs-target="#addAttendanceDayModal">
+            <i class="fa-solid fa-plus"></i> Add Day
+        </button>
+        
+        <!-- Add Attendance Day Modal -->
+        <div class="modal fade" id="addAttendanceDayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addAttendanceDayModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content border border-light rounded">
+                    <div class="modal-header brand-color">
+                        <h1 class="modal-title fs-5 text-white" id="addAttendanceDayModalLabel">Add Attendance Day</h1>
+                        <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body bg-banner p-3">
+                        <form method="POST" action="{% url 'batch_details' batch.id %}">
+                            {% csrf_token %}
+                            {{ attendance_form|crispy }}
+                            <button type="submit" class="btn btn-light">Add Attendance</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Add Attendance Day Modal end-->
+    </div>
+        {% if attendances %}
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle text-center m-0">
+            <thead>
+                <tr>
+                    <th class="bg-dark text-white" scope="col">ID</th>
+                    <th class="bg-dark text-white" scope="col">Title</th>
+                    <th class="bg-dark text-white" scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attendance in attendances %}
+                <tr>
+                    <th class="my-text" scope="row">a</th>
+                    <td class="my-text">b</td>
+                    <td class="my-text">
+                        <a class="btn btn-outline-dark" href=""><i class="fa-regular fa-eye"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+</div>
+
+<hr>
 
 
+{% comment %} Exam Part Start {% endcomment %}
 <div class="row border rounded p-3 bg-banner">
     <div class='d-flex justify-content-between'>
         <h3 class='text-uppercase text-white'>Exams:</h3>
         <button class="btn btn-outline-light fw-bold px-3" data-bs-toggle="modal" data-bs-target="#addExamFormModal"><i class="fa-solid fa-plus"></i> Add Exam</button>
-
-
     </div>
     <hr>
     {% if exams %}
     <div class="container table-responsive">
-        <table class="table table-success table-hover">
+        <table class="table table-hover table-bordered align-middle text-center m-0">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Action</th>
+                    <th class="bg-dark text-white" scope="col">ID</th>
+                    <th class="bg-dark text-white" scope="col">Title</th>
+                    <th class="bg-dark text-white" scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for exam in exams %}
                 <tr>
-                    <th scope="row">{{ exam.id }}</th>
-                    <td>{{ exam.title }}</td>
-                    <td>
-                        <a class="btn btn-warning" href={% url "exam_details" exam.id %}>Details</a>
+                    <th class="my-text" scope="row">{{ exam.id }}</th>
+                    <td class="my-text">{{ exam.title }}</td>
+                    <td class="my-text">
+                        <a class="btn btn-outline-dark" href={% url "exam_details" exam.id %}><i class="fa-regular fa-eye"></i></a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -161,12 +216,12 @@
 <!-- Add Exam Form Modal -->
 <div class="modal fade" id="addExamFormModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addExamFormModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content border border-light rounded">
             <div class="modal-header brand-color ">
                 <h1 class="modal-title fs-5 text-white" id="addExamFormModalLabel">Add Exam Form</h1>
                 <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body bg-banner p-3">
+            <div class="modal-body bg-banner p-3 ">
                 <form method="POST" action="">
                     {% csrf_token %}
                     {{ exam_form|crispy }}
