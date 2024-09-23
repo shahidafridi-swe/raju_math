@@ -78,20 +78,22 @@ def addStudent(request):
     return render(request, 'students/add_student.html', {'form': form})
 
 
-
 def pay_payment(request, payment_id):
     payment = get_object_or_404(Payment, pk=payment_id)
     if request.method == 'POST':
         form = PaymentForm(request.POST, instance=payment)
         if form.is_valid():
             payment = form.save(commit=False)
-            payment.is_paid = True
-            payment.save()
+            payment.is_paid = True  # Mark payment as paid
+            payment.save()  # Save the updated payment instance
             messages.success(request, 'Payment recorded successfully!')
             return redirect('student_details', id=payment.student.id)
+        else:
+            print(form.errors)
+            messages.error(request, 'Failed to record payment. Please check the details.')
     else:
         form = PaymentForm(instance=payment)
-        
+
     return render(request, 'students/student_details.html', {'form': form, 'payment': payment})
 
 

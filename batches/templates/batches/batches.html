@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="container">
+<section class="container border rounded bg-success-subtle mt-3 py-3">
     
-<div class="container row mt-3 ">
+<div class="container row ">
     <div class="col-md-8 ">
         <h3 class="my-text">{{batches.count}} BATCH{{batches|pluralize:'ES'}}:</h3>
 
@@ -25,7 +25,7 @@
         </form>
     </div>
 </div>
-<div class="border rounded p-1 ">
+<div class="border border-dark rounded  p-1 ">
     
 <div class="container table-responsive p-0">
     <table class="table table-hover table-bordered align-middle text-center m-0">

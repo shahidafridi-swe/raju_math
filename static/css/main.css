@@ -28,7 +28,7 @@
 }
 
 .nav-item a:hover {
-    color: rgb(9, 9, 9);
+    color: rgb(7, 223, 140);
     font-weight: bold;
     background-color: transparent;
     transition: .3s;
