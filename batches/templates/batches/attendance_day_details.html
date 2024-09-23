@@ -1,0 +1,33 @@
+<!-- attendance_day_details.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container bg-banner mt-2 rounded p-3">
+        <div class='d-flex justify-content-between'>
+            <h3 class='text-uppercase text-white'>Attendance for {{ date }}</h3>
+            <a class='btn btn-outline-light rounded-pill' href="{% url 'batch_details' batch.id %}">&#10094;</a>
+        </div>
+        <hr class="border border-light">
+        <!-- Add link to update the attendance and date -->
+        <a class="btn btn-outline-light mb-3" href="{% url 'attendance_day_update' batch.id date %}">Edit Attendance</a>
+
+        <table class="table table-hover table-bordered align-middle text-center m-0">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attendance in attendances %}
+                <tr>
+                    <td>{{ attendance.student.user.first_name }} {{ attendance.student.user.last_name }}</td>
+                    <td>
+                        {% if attendance.is_attend %} Attended {% else %} Absent {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

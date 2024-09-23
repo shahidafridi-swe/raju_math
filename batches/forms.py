@@ -15,4 +15,7 @@ class AttendanceDateForm(forms.Form):
 class AttendanceUpdateForm(forms.ModelForm):
     class Meta:
         model = Attendance
-        fields = ['is_attend']
+        fields = ['date']
+
+    date = forms.DateField(widget=forms.TextInput(attrs={'type': 'date'}))
+

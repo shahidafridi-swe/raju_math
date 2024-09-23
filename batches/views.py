@@ -85,19 +85,23 @@ def batchDetails(request, id):
     else:
         attendance_form = AttendanceDateForm()
         exam_form = ExamForm()
+
+    # Get unique attendance dates for the batch
     attendances = Attendance.objects.filter(batch=batch)
+    unique_days = attendances.values_list('date', flat=True).distinct()
+
     context = {
         'students': students,
         'search_query': search_query,
         'batch': batch,
         'exams': exams,
         'exam_form': exam_form,
-        'attendances':attendances,
+        'attendances': attendances,
         'attendance_form': attendance_form,  # Pass the attendance form
+        'days': unique_days,  # Pass the unique days to the template
     }
 
     return render(request, "batches/batch_details.html", context)
-
 
 @user_passes_test(superuser_required, login_url='home')
 def add_batch(request):
@@ -149,3 +153,44 @@ def delete_batch(request, pk):
     }
     return render(request, 'batches/batch_confirm_delete.html', context)
 
+def attendance_details(request, batch_id, date):
+    batch = get_object_or_404(Batch, id=batch_id)
+    attendances = Attendance.objects.filter(batch=batch, date=date)
+    return render(request, 'batches/attendance_day_details.html', {
+        'attendances': attendances, 
+        'batch': batch, 
+        'date': date
+    })
+
+
+def attendance_update(request, batch_id, date):
+    batch = get_object_or_404(Batch, id=batch_id)
+    attendances = Attendance.objects.filter(batch=batch, date=date)
+
+    if request.method == 'POST':
+        # Handle updating the attendance statuses
+        for attendance in attendances:
+            is_attend = request.POST.get(f'is_attend_{attendance.id}') == 'on'
+            attendance.is_attend = is_attend
+            attendance.save()
+
+        # Handle updating the attendance date
+        attendance_update_form = AttendanceUpdateForm(request.POST)
+        if attendance_update_form.is_valid():
+            new_date = attendance_update_form.cleaned_data['date']
+            
+            # Update the date for all attendance records for the batch
+            Attendance.objects.filter(batch=batch, date=date).update(date=new_date)
+
+            messages.success(request, f"Attendance for {date} updated successfully.")
+            return redirect('attendance_day_details', batch_id=batch.id, date=new_date)
+
+    else:
+        attendance_update_form = AttendanceUpdateForm(initial={'date': date})
+
+    return render(request, 'batches/update_attendance.html', {
+        'attendances': attendances,
+        'batch': batch,
+        'date': date,
+        'attendance_update_form': attendance_update_form,
+    })
