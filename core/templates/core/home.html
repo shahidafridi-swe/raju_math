@@ -104,17 +104,63 @@
 </section>
 {% comment %} success student info part end  {% endcomment %}
 
+
+{% comment %} Question Part Start {% endcomment %}
+
+<section class="container border mt-3 p-0 rounded">
+    <h3 class="bg-banner p-3 text-white text-center rounded">রাজু ম্যাথ নিয়ে আপনার জিজ্ঞাসা</h3>
+    <div class="accordion accordion-flush " id="accordionFlushExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed my-text" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                এই কোর্স কাদের জন্য?
+            </button>
+          </h2>
+          <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body bg-success-subtle">যে সিরিয়াস হার্ডওয়ার্ক করে ভালো একজন প্রোগ্রামার হতে চায়। তার জন্য। যে ধরে ধরে প্রোগ্রামিংয়ের কোর জিনিসগুলো শিখতে চায়। কম্পিউটার সায়েন্সের ফান্ডামেন্টাল জিনিসগুলো শিখতে চায়। তার জন্য।</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed my-text" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                তোমার কেন এই কোর্স করা উচিত?
+            </button>
+          </h2>
+          <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body bg-success-subtle">তুমি প্রোগ্রামার হতে চাও। সেটার জন্য হার্ডওয়ার্ক করতে চাও। কিন্তু নিজে নিজে করে উঠতে পারতেছো না। পরিপূর্ন গাইডলাইন পাচ্ছ না। কোথাও আটকে গেলে এনাফ হেল্প পাচ্ছ না। বা ভালোভাবে শেখা শেষ করার পর কোন কোম্পানিতে ইন্টার্ন/চাকরি তে যেতে চাও। কিন্তু রাস্তা জানো না। তাহলে এই কোর্স এ জয়েন করো।</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed my-text" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                তোমার কেন এই কোর্স করা উচিত?
+            </button>
+          </h2>
+          <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body bg-success-subtle">তুমি প্রোগ্রামার হতে চাও। সেটার জন্য হার্ডওয়ার্ক করতে চাও। কিন্তু নিজে নিজে করে উঠতে পারতেছো না। পরিপূর্ন গাইডলাইন পাচ্ছ না। কোথাও আটকে গেলে এনাফ হেল্প পাচ্ছ না। বা ভালোভাবে শেখা শেষ করার পর কোন কোম্পানিতে ইন্টার্ন/চাকরি তে যেতে চাও। কিন্তু রাস্তা জানো না। তাহলে এই কোর্স এ জয়েন করো।</div>
+          </div>
+        </div>
+      </div>
+</section>
+
+{% comment %} Question Part End {% endcomment %}
+
+
+
+
+
 {% comment %} student review part start  {% endcomment %}
- <section class="container my-3 ">
-    <h3 class="mt-5 my-text text-center">STUDENTS REVIEW</h3>
+ <section class="container mt-3 p-3 rounded bg-banner">
+    <h3 class="text-white p-3 text-center">STUDENTS REVIEW</h3>
     <div class="swiffy-slider slider-item-show3 slider-nav-round slider-nav-page ">
         <ul class="slider-container">
             {% for student in successStudents %}
             
             <li>
-                <div class="card border-0 bg-banner ">
+                <div class="card border bg-banner text-white">
                     <div class="text-center">
-                        <img src="{{ student.image.url }}" class="card-img-top h-50 w-50 rounded-circle" loading="lazy" alt="...">
+
+                        <img src="{{ student.image.url }}" class="my-2 card-img-top h-50 w-50 rounded-circle" loading="lazy" alt="...">
                         <hr class="m-0">
                     </div>
                     <div class="card-body px-3">
